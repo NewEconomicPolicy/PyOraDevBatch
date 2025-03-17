@@ -1,14 +1,11 @@
-"""
--------------------------------------------------------------------------------
- Name:        ora_excel_read_misc.py
- Purpose:     collection of miscellaneus functions required by the constructor
- Author:      Mike Martin
- Created:     23/02/2021
- Licence:     <your licence>
- Description:
-
--------------------------------------------------------------------------------
-"""
+# -------------------------------------------------------------------------------
+#  Name:        ora_excel_read_misc.py
+#  Purpose:     collection of miscellaneus functions required by the constructor
+# Author:      Mike Martin
+# Created:     23/02/2021
+# Licence:     <your licence>
+# Description:
+# -------------------------------------------------------------------------------
 
 __prog__ = 'ora_excel_read_misc.py'
 __version__ = '0.0.1'

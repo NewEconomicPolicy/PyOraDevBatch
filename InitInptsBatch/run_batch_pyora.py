@@ -53,7 +53,6 @@ def main():
     args.runfnsdir = abspath(normpath(expanduser(expandvars(args.runfnsdir))))
 
     RunSite(args.runfnsdir)  # instantiate model run
-    # sim.run_ecosse()
 
 if __name__ == '__main__':
     main()
