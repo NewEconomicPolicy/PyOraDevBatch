@@ -48,6 +48,11 @@ sleepTime = 5
 
 MNTH_NAMES_SHORT = [mnth for mnth in month_abbr[1:]]
 
+USE_SWITCHES = list(['use_isda', 'use_csv', 'nyrs_ss', 'nyrs_fwd'])
+MANDAT_ATTRIBS = list(['mgmt_dir0', 'write_excel', 'clim_scnr_indx', 'strt_yr_ss_indx', 'strt_yr_fwd_indx',
+                       'study', 'farm_name', 'use_exstng_soil']) + USE_SWITCHES
+EXTRA_ORG_WASTE = list(['owex_min', 'owex_max', 'ow_type_indx', 'mnth_appl_indx'])
+
 FNAME_ECON = 'PurchasesSalesLabour.xlsx'
 FNAME_RUN = 'FarmWthrMgmt.xlsx'
 
@@ -222,7 +227,7 @@ def _read_setup_file(program_id):
 
     # only one configuration file for this application
     # ================================================
-    config_file = normpath(settings['config_dir'] + '/' + program_id + '_config.json')
+    config_file = normpath(settings['config_dir'] + '/' + program_id + '_config_batch.json')
     settings['config_file'] = config_file
     print('Using configuration file: ' + config_file)
 
@@ -237,25 +242,19 @@ def _read_setup_file(program_id):
         sys.exit(0)
 
     settings['inp_dir'] = ''  # this will be reset after valid Excel inputs file has been identified
-
-    # only one configuration file for this application
-    # ================================================
-    config_file = normpath(settings['config_dir'] + '/' + program_id + '_config.json')
-    settings['config_file'] = config_file
-
     settings['study'] = ''
 
     return settings, lookup_df
 
-def read_config_file(form):
+def read_config_file(form, run_fns_dir):
     """
     read widget settings used in the previous programme session from the config file, if it exists,
     or create config file using default settings if config file does not exist
     """
-    USE_SWITCHES = list(['use_isda', 'use_csv', 'nyrs_ss', 'nyrs_fwd'])
-    MANDAT_ATTRIBS = list(['mgmt_dir0', 'write_excel', 'clim_scnr_indx', 'strt_yr_ss_indx', 'strt_yr_fwd_indx',
-                           'study', 'farm_name', 'use_exstng_soil']) + USE_SWITCHES
-    EXTRA_ORG_WASTE = list(['owex_min', 'owex_max', 'ow_type_indx', 'mnth_appl_indx'])
+    mgmt_dir0 = normpath(run_fns_dir)
+    if not isdir(mgmt_dir0):
+        print(ERROR_STR + '\nCannot proceed - Management path: ' + mgmt_dir0 + ' does not exist')
+        return False
 
     config_file = form.settings['config_file']
     if exists(config_file):
@@ -271,26 +270,9 @@ def read_config_file(form):
 
     for attrib in MANDAT_ATTRIBS:
         if attrib not in config:
-            if attrib == 'use_exstng_soil':
-                config['use_exstng_soil'] = True
-            else:
-                print(ERROR_STR + 'attribute {} not present in configuration file: {}'.format(attrib, config_file))
-                sleep(sleepTime)
-                sys.exit(0)
-
-    mgmt_dir0 = normpath(config['mgmt_dir0'])
-    if not isdir(mgmt_dir0) or mgmt_dir0 == '.':
-        # patch - select first study directory
-        # ====================================
-        study_dir = join(form.settings['study_area_dir'], config['study'])
-        study_dirs = [dirnm for dirnm in listdir(study_dir) if isdir(join(study_dir, dirnm))]
-        if len(study_dirs) > 0:
-            mgmt_dir0 = join(study_dir, study_dirs[0])
-
-    if not isdir(mgmt_dir0):
-        mess = '\nManagement path: ' + mgmt_dir0 + ' does not exist\n\t- check configuration file ' + config_file
-        print(ERROR_STR + mess)
-        return False
+            print(ERROR_STR + 'attribute {} not present in configuration file: {}'.format(attrib, config_file))
+            sleep(sleepTime)
+            sys.exit(0)
 
     # check runfile
     # =============

@@ -33,7 +33,7 @@ class RunSite(object):
         C
         """
         initiation(self)
-        read_config_file(self)
+        read_config_file(self, run_fns_dir)
         run_soil_cn_algorithms(self)
 
         if check_livestock_run_data(self.settings['mgmt_dir'], self.anml_prodn):
