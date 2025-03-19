@@ -11,17 +11,14 @@ __version__ = '0.0.1'
 __author__ = 's03mm5'
 
 import sys
-from os import system
 from os.path import normpath, split, join
 
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QFont
-from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, QLabel, QPushButton, QApplication,
-                                                                           QCheckBox, QFileDialog, QTextEdit)
-from subprocess import Popen, PIPE, STDOUT, check_output
+from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, QLabel,
+                                                            QPushButton, QApplication, QFileDialog)
+from subprocess import Popen, PIPE, STDOUT
 
 from initialise_sub_funcs import read_config_file, initiation, write_config_file
-# from set_up_logging import OutLog
 
 WDGT_SIZE_110 = 110
 
@@ -91,7 +88,7 @@ class Form(QWidget):
         # ==================== operations ======================
         irow += 1
         w_sub_job = QPushButton('Submit batch job')
-        helpText = 'Download historic datasets'
+        helpText = 'Submit batch job'
         w_sub_job.setToolTip(helpText)
         w_sub_job.setFixedWidth(WDGT_SIZE_110)
         w_sub_job.clicked.connect(self.subBatchJob)
@@ -123,20 +120,14 @@ class Form(QWidget):
 
     def subBatchJob(self):
         """
-        C
+        run the make simulations script
         """
-
-        # run the make simulations script
-        # ===============================
-        self.settings['python_exe'] = 'E:\Python38\python.exe'
-        self.settings['sub_prog'] = join('G:\AbUnivGit\PyOraDevBatch\InitInptsBatch', 'run_batch_pyora.py')
         run_fn = normpath(self.w_run_fn.text())
         run_dir = split(run_fn)[0]
         self.settings['run_dir'] = run_dir
 
         cmd_str = self.settings['python_exe'] + ' ' + self.settings['sub_prog'] + ' "' + self.settings['run_dir'] + '"'
         new_inst = Popen(cmd_str, shell=False, stdin=PIPE, stderr=STDOUT)
-        # system(cmd_str)
 
     def fetchRunFile(self):
         """
