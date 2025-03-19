@@ -1,10 +1,10 @@
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # Name:        PyOratorSubGUI.py
 # Purpose:     GUI to perform batch jon submisssions
 # Author:      Mike Martin
 # Created:     26/03/2020
 # Licence:     <your licence>
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 
 __prog__ = 'PyOratorSubGUI.py'
 __version__ = '0.0.1'
@@ -23,14 +23,16 @@ from initialise_sub_funcs import read_config_file, initiation, write_config_file
 WDGT_SIZE_110 = 110
 
 class Form(QWidget):
-    '''
+    """
     define two vertical boxes, in LH vertical box put the painter and in RH put the grid
     define main horizon box to put LH and RH vertical boxes in
     grid layout consists of combo boxes, labels and buttons
-    '''
+    """
     def __init__(self, parent=None):
 
         super(Form, self).__init__(parent)
+
+        self.settings = None
 
         initiation(self)
         font = QFont(self.font())
@@ -127,7 +129,7 @@ class Form(QWidget):
         self.settings['run_dir'] = run_dir
 
         cmd_str = self.settings['python_exe'] + ' ' + self.settings['sub_prog'] + ' "' + self.settings['run_dir'] + '"'
-        new_inst = Popen(cmd_str, shell=False, stdin=PIPE, stderr=STDOUT)
+        new_inst = Popen(cmd_str, stdin=PIPE, stderr=STDOUT)
 
     def fetchRunFile(self):
         """
@@ -140,14 +142,15 @@ class Form(QWidget):
             self.w_run_fn.setText(fname)
 
     def exitClicked(self):
-        '''
+        """
         write last GUI selections
-        '''
+        """
         write_config_file(self)
         self.close()
 
 def main():
     """
+    Entry point
     """
     app = QApplication(sys.argv)  # create QApplication object
     form = Form() # instantiate form

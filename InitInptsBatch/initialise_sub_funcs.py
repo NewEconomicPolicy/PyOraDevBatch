@@ -1,10 +1,10 @@
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # Name:        initialise_funcs.py
 # Purpose:     script to read read and write the setup and configuration files
 # Author:      Mike Martin
 # Created:     26/03/2020
 # Licence:     <your licence>
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 #
 
 __prog__ = 'initialise_funcs.py'
@@ -26,9 +26,9 @@ ERROR_STR = '*** Error *** '
 WARN_STR = '*** Warning *** '
 
 def initiation(form):
-    '''
-    # this function is called to initiate the programme to process non-GUI settings.
-    '''
+    """
+    this function is called to initiate the programme to process non-GUI settings.
+    """
 
     # retrieve settings
     # ================
